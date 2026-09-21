@@ -779,7 +779,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 async function loadConfig() {
   try {
-    const r = await fetch('./config.json');
+    const r = await fetch('./menu-data.json');
     CONFIG = { ...CONFIG, ...(await r.json()) };
     console.log('✅ Config chargée');
   } catch (e) {
@@ -950,19 +950,19 @@ function renderOrderCard(order, status) {
 
   let actions = '';
   if (status.id === 'new') {
-    actions = `<button class="btn-action btn-start" onclick="updateStatus('${orderNum}', 'preparing')">👨‍🍳 Commencer</button>`;
+    actions = `<button class="btn-action btn-start" onclick="updateStatus('${orderNum}', 'preparing')">✅ Confirmer la commande</button>`;
   } else if (status.id === 'preparing') {
     actions = `
-      <button class="btn-action btn-ready" onclick="updateStatus('${orderNum}', 'ready')">✅ Prête</button>
+      <button class="btn-action btn-ready" onclick="updateStatus('${orderNum}', 'ready')">✅ Commande prête</button>
       <button class="btn-action btn-back" onclick="updateStatus('${orderNum}', 'new')">↩</button>
     `;
   } else if (status.id === 'ready') {
     actions = `
-      <button class="btn-action btn-deliver" onclick="updateStatus('${orderNum}', 'delivering')">🛵 Livraison</button>
+      <button class="btn-action btn-deliver" onclick="updateStatus('${orderNum}', 'delivering')">🛵 Envoyer en livraison</button>
       <button class="btn-action btn-back" onclick="updateStatus('${orderNum}', 'preparing')">↩</button>
     `;
   } else if (status.id === 'delivering') {
-    actions = `<button class="btn-action btn-ready" onclick="updateStatus('${orderNum}', 'delivered')">🎉 Livrée</button>`;
+    actions = `<button class="btn-action btn-ready" onclick="updateStatus('${orderNum}', 'delivered')">✅ Confirmer la livraison</button>`;
   }
 
   const payment = order.payment_method ? order.payment_method.toUpperCase() : '';
@@ -1030,9 +1030,9 @@ function getTimeSince(dateStr) {
 }
 
 function updateStats() {
-  const newCount = orders.filter(o => (o.state || 'new') === 'new').length;
-  const prepCount = orders.filter(o => (o.state || 'new') === 'preparing').length;
-  const readyCount = orders.filter(o => (o.state || 'new') === 'ready').length;
+  const newCount = orders.filter(o => (o.state || o.status || 'new') === 'new').length;
+  const prepCount = orders.filter(o => (o.state || o.status || 'new') === 'preparing').length;
+  const readyCount = orders.filter(o => (o.state || o.status || 'new') === 'ready').length;
 
   document.getElementById('statNew').textContent = newCount;
   document.getElementById('statPrep').textContent = prepCount;
