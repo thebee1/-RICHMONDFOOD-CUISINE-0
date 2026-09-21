@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RICHMOND FOOD - Cuisine</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif; }
+:root {
+  --primary: #E63946;
+  --secondary: #F77F00;
+  --dark: #101A2E;
+  --light: #F5F7FB;
+  --bg-soft: #EEF3F8;
+  --card: #FFFFFF;
+  --muted: #607088;
+  --success: #10B981;
+  --info: #3B82F6;
+  --warning: #F59E0B;
+  --shadow: 0 12px 30px rgba(15, 23, 42, 0.10);
+  --shadow-lg: 0 24px 50px rgba(15, 23, 42, 0.16);
+  --radius: 18px;
+  --line: rgba(148, 163, 184, 0.22);
+  --glow-primary: rgba(230, 57, 70, 0.18);
+}
+body {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.4), rgba(255,255,255,0.1)),
+    radial-gradient(circle at top left, rgba(230,57,70,0.12), transparent 22%),
+    radial-gradient(circle at bottom right, rgba(59,130,246,0.10), transparent 26%),
+    linear-gradient(135deg, #edf2f8 0%, #eef4fa 38%, #edf5f9 100%);
+  color: var(--dark);
+  min-height: 100vh;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(148,163,184,0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148,163,184,0.08) 1px, transparent 1px);
+  background-size: 26px 26px;
+  mask-image: radial-gradient(circle at center, black 35%, transparent 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+body > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+header {
+  background: rgba(15, 23, 42, 0.72);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 8px 30px rgba(15, 23, 42, 0.18);
+  min-height: 88px;
+  padding: 0 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+  z-index: 100;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.14);
+}
+.logo {
+  display: flex; align-items: center; gap: 12px;
+}
+.logo-icon {
+  width: 54px; height: 54px;
+  background: linear-gradient(145deg, #ff6b6b 0%, #ff8a3d 30%, #ff5e7b 100%);
+  border-radius: 16px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.9rem;
+  box-shadow: 0 15px 30px rgba(230,57,70,0.26);
+  animation: floatLogo 4s ease-in-out infinite;
+}
+@keyframes floatLogo {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+.logo-text { font-size: 1.5rem; font-weight: 900; line-height: 1.05; letter-spacing: -0.05em; color: white; }
+.logo-text span { color: #ff9f8c; }
+.logo-sub {
+  font-size: 0.7rem; color: rgba(255,255,255,0.7);
+  font-weight: 700; letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.header-center {
+  display: flex; gap: 14px; align-items: center;
+  flex: 1;
+  justify-content: center;
+}
+.stat-badge {
+  position: relative;
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 16px; border-radius: 999px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.2);
+  overflow: hidden;
+}
+.stat-badge::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.12) 50%, transparent 100%);
+  transform: translateX(-140%);
+  animation: sheen 3.4s linear infinite;
+}
+.stat-badge.preparing {
+  background: rgba(245, 158, 11, 0.08);
+  border-color: rgba(245, 158, 11, 0.20);
+}
+.stat-badge.ready {
+  background: rgba(16, 185, 129, 0.08);
+  border-color: rgba(16, 185, 129, 0.22);
+}
+@keyframes sheen {
+  0% { transform: translateX(-140%); }
+  100% { transform: translateX(140%); }
+}
+.stat-badge .dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--primary);
+  box-shadow: 0 0 0 0 rgba(230,57,70,0.6);
+  animation: pulse 2s infinite;
+}
+.stat-badge.preparing .dot { background: var(--secondary); }
+.stat-badge.ready .dot { background: var(--success); }
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); box-shadow: 0 0 0 0 rgba(230,57,70,0.5); }
+  50% { opacity: 0.75; transform: scale(1.12); box-shadow: 0 0 0 8px rgba(230,57,70,0.08); }
+}
+.stat-badge .num { font-weight: 900; font-size: 1.3rem; color: white; }
+.stat-badge.preparing .num { color: #ffd29c; }
+.stat-badge.ready .num { color: #9ce5ca; }
+.stat-badge .label { font-size: 0.8rem; color: rgba(255,255,255,0.8); font-weight: 700; }
+
+.header-right {
+  display: flex; gap: 12px; align-items: center;
+}
+.clock {
+  font-family: 'Consolas', monospace;
+  font-size: 1.28rem;
+  font-weight: 800;
+  color: white;
+  padding: 10px 15px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.14);
+}
+.icon-btn {
+  width: 42px; height: 42px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.08);
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: all 0.2s ease;
+  display: flex; align-items: center; justify-content: center;
+  color: white;
+}
+.icon-btn:hover {
+  border-color: transparent;
+  background: linear-gradient(135deg, var(--primary), #f8476b);
+  color: white;
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 12px 24px rgba(230,57,70,0.25);
+}
+.status-indicator {
+  display: flex; align-items: center; gap: 7px;
+  padding: 8px 14px;
+  background: rgba(16, 185, 129, 0.10);
+  border: 1px solid rgba(16, 185, 129, 0.30);
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #b9f7d5;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.status-indicator.offline {
+  background: rgba(230,57,70,0.10);
+  border-color: rgba(230,57,70,0.28);
+  color: #ffd0d5;
+}
+.status-indicator .dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: currentColor;
+  animation: pulse 2s infinite;
+}
+
+.info-bar {
+  background: linear-gradient(90deg, rgba(16, 26, 46, 0.96), rgba(29, 53, 87, 0.93));
+  color: white;
+  min-height: 50px;
+  padding: 0 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.82rem;
+  flex-shrink: 0;
+  letter-spacing: 0.01em;
+  border-bottom: 1px solid rgba(148,163,184,0.14);
+}
+.info-bar .left { display: flex; gap: 25px; }
+.info-bar .right { display: flex; gap: 15px; opacity: 0.85; }
+
+.board {
+  flex: 1;
+  padding: 22px 20px 26px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(260px, 1fr));
+  gap: 20px;
+  overflow: hidden;
+}
+.column {
+  background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(255,255,255,0.88));
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-top: 5px solid;
+  border: 1px solid rgba(148,163,184,0.18);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.column:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+.column.new { border-top-color: var(--primary); }
+.column.preparing { border-top-color: var(--secondary); }
+.column.ready { border-top-color: var(--success); }
+.column.delivering { border-top-color: var(--info); }
+
+.column-header {
+  padding: 18px 20px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(148,163,184,0.18);
+  background: linear-gradient(180deg, rgba(255,255,255,0.14), rgba(255,255,255,0));
+}
+.column-title {
+  display: flex; align-items: center; gap: 12px;
+}
+.column-icon { font-size: 1.5rem; filter: drop-shadow(0 8px 18px rgba(0,0,0,0.08)); }
+.column-title-text { font-size: 0.9rem; font-weight: 900; letter-spacing: 0.08em; text-transform: uppercase; }
+.column.new .column-title-text { color: var(--primary); }
+.column.preparing .column-title-text { color: var(--secondary); }
+.column.ready .column-title-text { color: var(--success); }
+.column.delivering .column-title-text { color: var(--info); }
+.column-count {
+  background: var(--light);
+  color: var(--dark);
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-weight: 900;
+  font-size: 0.9rem;
+  min-width: 34px;
+  text-align: center;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.7);
+}
+.column.new .column-count { background: rgba(230,57,70,0.12); color: var(--primary); }
+.column.preparing .column-count { background: rgba(247,127,0,0.12); color: var(--secondary); }
+.column.ready .column-count { background: rgba(16,185,129,0.12); color: var(--success); }
+.column.delivering .column-count { background: rgba(59,130,246,0.12); color: var(--info); }
+
+.column-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 12px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.column-body::-webkit-scrollbar { width: 8px; }
+.column-body::-webkit-scrollbar-track { background: rgba(148,163,184,0.08); border-radius: 10px; }
+.column-body::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba(230,57,70,0.7), rgba(59,130,246,0.6));
+  border-radius: 10px;
+}
+.column-body::-webkit-scrollbar-thumb:hover { filter: brightness(1.1); }
+
+.column-body::-webkit-scrollbar { width: 8px; }
+.column-body::-webkit-scrollbar-track { background: #F8F8F8; }
+.column-body::-webkit-scrollbar-thumb { background: #D0D0D0; border-radius: 4px; }
+.column-body::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+
+/* ============================================================
+   ORDER CARD
+   ============================================================ */
+.order-card {
+  background: linear-gradient(180deg, #ffffff 0%, #f9fbff 100%);
+  border-radius: 18px;
+  border: 1px solid rgba(148,163,184,0.18);
+  padding: 15px;
+  transition: all 0.25s ease;
+  animation: slideIn 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.05);
+}
+.order-card::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 0 0;
+  background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.8) 30%, transparent 60%);
+  transform: translateX(-150%);
+  animation: shimmerCard 3.2s ease-in-out infinite;
+  pointer-events: none;
+}
+.order-card.new::before { background: linear-gradient(120deg, transparent 0%, rgba(230,57,70,0.10) 35%, transparent 70%); }
+.order-card.preparing::before { background: linear-gradient(120deg, transparent 0%, rgba(247,127,0,0.10) 35%, transparent 70%); }
+.order-card.ready::before { background: linear-gradient(120deg, transparent 0%, rgba(16,185,129,0.10) 35%, transparent 70%); }
+.order-card.delivering::before { background: linear-gradient(120deg, transparent 0%, rgba(59,130,246,0.10) 35%, transparent 70%); }
+.order-card::after {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 4px;
+  border-radius: 0 12px 12px 0;
+}
+.order-card.new::after { background: linear-gradient(180deg, var(--primary), #ff7a82); }
+.order-card.preparing::after { background: linear-gradient(180deg, var(--secondary), #ffb666); }
+.order-card.ready::after { background: linear-gradient(180deg, var(--success), #4adea7); }
+.order-card.delivering::after { background: linear-gradient(180deg, var(--info), #82c8ff); }
+
+@keyframes shimmerCard {
+  0% { transform: translateX(-150%); }
+  55%, 100% { transform: translateX(150%); }
+}
+.order-card:hover {
+  transform: translateY(-4px) scale(1.005);
+  box-shadow: 0 18px 34px rgba(15, 23, 42, 0.10);
+  border-color: rgba(148,163,184,0.28);
+}
+.order-card.urgent {
+  border-color: rgba(230,57,70,0.42);
+  animation: slideIn 0.45s ease, urgentPulse 1.8s infinite;
+}
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-18px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes urgentPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(230,57,70,0); }
+  50% { box-shadow: 0 0 0 10px rgba(230,57,70,0.03); }
+}
+
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px dashed rgba(148,163,184,0.28);
+}
+.order-number {
+  font-size: 1.18rem;
+  font-weight: 900;
+  color: var(--dark);
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+}
+.order-source {
+  font-size: 0.67rem;
+  padding: 6px 10px;
+  border-radius: 50px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.source-website { background: rgba(59,130,246,0.12); color: var(--info); }
+.source-whatsapp { background: rgba(16,185,129,0.10); color: var(--success); }
+
+.order-time {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin-bottom: 12px;
+  font-weight: 700;
+}
+.order-time.urgent { color: var(--primary); font-weight: 900; }
+
+.order-customer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 12px;
+  background: linear-gradient(135deg, rgba(15,23,42,0.04), rgba(59,130,246,0.04));
+  border-radius: 12px;
+  margin-bottom: 10px;
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+.order-contact {
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin-bottom: 12px;
+  line-height: 1.55;
+}
+.order-contact strong { color: var(--dark); }
+
+.order-items {
+  background: linear-gradient(180deg, #fbfcfe 0%, #f5f8ff 100%);
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 12px;
+  border: 1px solid rgba(148,163,184,0.14);
+}
+.order-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 7px 0;
+  font-size: 0.88rem;
+}
+.order-item:not(:last-child) {
+  border-bottom: 1px solid rgba(148,163,184,0.12);
+}
+.item-left { display: flex; gap: 10px; align-items: flex-start; flex: 1; }
+.item-qty {
+  background: linear-gradient(135deg, var(--primary), #ff7f9d);
+  color: white;
+  font-weight: 800;
+  padding: 4px 9px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  min-width: 34px;
+  text-align: center;
+  box-shadow: 0 8px 18px rgba(230,57,70,0.18);
+}
+.item-name { font-weight: 700; color: var(--dark); flex: 1; }
+.item-notes {
+  font-size: 0.75rem;
+  color: var(--primary);
+  font-style: italic;
+  margin-top: 3px;
+}
+
+.order-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-top: 2px solid rgba(148,163,184,0.14);
+  margin-bottom: 12px;
+}
+.order-total-label { font-size: 0.76rem; color: var(--muted); font-weight: 900; text-transform: uppercase; letter-spacing: 0.09em; }
+.order-total-value { font-size: 1.22rem; font-weight: 900; color: var(--primary); }
+
+.order-meta {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+.meta-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  background: linear-gradient(180deg, #ffffff, #f3f7fb);
+  border-radius: 50px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--dark);
+  border: 1px solid rgba(148,163,184,0.16);
+}
+
+.order-notes {
+  background: rgba(230,57,70,0.08);
+  color: var(--primary);
+  padding: 10px 12px;
+  border-radius: 10px;
+  margin-bottom: 12px;
+  font-size: 0.83rem;
+  border-left: 3px solid var(--primary);
+  font-weight: 700;
+}
+
+.order-actions { display: flex; gap: 8px; }
+.btn-action {
+  flex: 1;
+  padding: 12px 10px;
+  border: none;
+  border-radius: 12px;
+  font-weight: 900;
+  font-size: 0.76rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.btn-action:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(15, 23, 42, 0.12); }
+.btn-action:active { transform: translateY(0); }
+.btn-start { background: linear-gradient(135deg, var(--secondary), #ff9d42); color: white; }
+.btn-ready { background: linear-gradient(135deg, var(--success), #10b884); color: white; }
+.btn-deliver { background: linear-gradient(135deg, var(--info), #5fa3d0); color: white; }
+.btn-back { background: #eef1f5; color: var(--dark); }
+.btn-back:hover { background: #e3e8ee; }
+
+.empty-state {
+  flex: 1;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  color: var(--gray);
+  padding: 40px 20px;
+  text-align: center;
+}
+.empty-icon {
+  font-size: 3.5rem;
+  opacity: 0.2;
+  margin-bottom: 15px;
+}
+.empty-text { font-size: 0.9rem; font-weight: 500; }
+
+/* ============================================================
+   ALERT
+   ============================================================ */
+.alert-overlay {
+  position: fixed; inset: 0;
+  background: linear-gradient(135deg, rgba(230,57,70,0.98), rgba(247,127,0,0.98));
+  z-index: 9999;
+  display: none;
+  flex-direction: column;
+  align-items: center; justify-content: center;
+  color: white;
+  text-align: center;
+}
+.alert-overlay.show { display: flex; animation: alertIn 0.5s ease; }
+@keyframes alertIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+.alert-icon {
+  font-size: 8rem;
+  margin-bottom: 20px;
+  animation: bounce 0.8s infinite alternate;
+}
+@keyframes bounce {
+  from { transform: translateY(0); }
+  to { transform: translateY(-25px); }
+}
+.alert-title {
+  font-size: 3.5rem;
+  font-weight: 900;
+  margin-bottom: 15px;
+  letter-spacing: 2px;
+}
+.alert-text {
+  font-size: 1.5rem;
+  opacity: 0.95;
+  margin-bottom: 40px;
+  font-weight: 600;
+}
+.alert-close {
+  padding: 18px 50px;
+  background: white;
+  color: var(--primary);
+  border: none;
+  border-radius: 50px;
+  font-size: 1.2rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.alert-close:hover {
+  transform: scale(1.05);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+}
+
+/* ============================================================
+   TOAST
+   ============================================================ */
+.toast {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: var(--dark);
+  color: white;
+  padding: 15px 30px;
+  border-radius: 50px;
+  font-weight: 600;
+  box-shadow: var(--shadow-lg);
+  opacity: 0;
+  transition: all 0.3s;
+  z-index: 1000;
+}
+.toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+.toast.success { background: var(--success); }
+.toast.error { background: var(--primary); }
+
+/* ============================================================
+   LOADING
+   ============================================================ */
+.loading {
+  position: fixed; inset: 0;
+  background: var(--light);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  z-index: 10000;
+  transition: opacity 0.5s;
+}
+.loading.hide { opacity: 0; pointer-events: none; }
+.spinner {
+  width: 60px; height: 60px;
+  border: 5px solid #E5E5E5;
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-text { color: var(--dark); font-weight: 600; font-size: 1.1rem; }
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 1300px) {
+  .board { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 1000px) {
+  .board { grid-template-columns: repeat(2, 1fr); }
+  .header-center { display: none; }
+}
+@media (max-width: 700px) {
+  .board { grid-template-columns: 1fr; overflow-y: auto; }
+  body { overflow: auto; }
+  header { padding: 0 15px; }
+  .logo-text { font-size: 1rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- LOADING -->
+<div class="loading" id="loading">
+  <div class="spinner"></div>
+  <div class="loading-text">Chargement de la cuisine...</div>
+</div>
+
+<!-- ALERT NEW ORDER -->
+<div class="alert-overlay" id="alertOverlay">
+  <div class="alert-icon">🔔</div>
+  <div class="alert-title">NOUVELLE COMMANDE</div>
+  <div class="alert-text" id="alertText">--</div>
+  <button class="alert-close" onclick="closeAlert()">✓ J'AI VU</button>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">
+    <div class="logo-icon">🍽️</div>
+    <div>
+      <div class="logo-text">RICHMOND<span>FOOD</span></div>
+      <div class="logo-sub">Tableau de Bord Cuisine</div>
+    </div>
+  </div>
+
+  <div class="header-center">
+    <div class="stat-badge">
+      <div class="dot"></div>
+      <div class="num" id="statNew">0</div>
+      <div class="label">Nouvelles</div>
+    </div>
+    <div class="stat-badge preparing">
+      <div class="dot"></div>
+      <div class="num" id="statPrep">0</div>
+      <div class="label">En préparation</div>
+    </div>
+    <div class="stat-badge ready">
+      <div class="dot"></div>
+      <div class="num" id="statReady">0</div>
+      <div class="label">Prêtes</div>
+    </div>
+  </div>
+
+  <div class="header-right">
+    <div class="status-indicator" id="statusBadge">
+      <div class="dot"></div>
+      <span id="statusText">En ligne</span>
+    </div>
+    <div class="clock" id="clock">--:--:--</div>
+    <button class="icon-btn" onclick="toggleSound()" id="soundBtn" title="Son">🔊</button>
+    <button class="icon-btn" onclick="toggleFullscreen()" title="Plein écran">⛶</button>
+    <button class="icon-btn" onclick="manualRefresh()" title="Rafraîchir">🔄</button>
+  </div>
+</header>
+
+<!-- INFO BAR -->
+<div class="info-bar">
+  <div class="left">
+    <span>🕐 <span id="infoTime">--:--</span></span>
+    <span>📊 <span id="infoTotal">0</span> commandes actives</span>
+  </div>
+  <div class="right">
+    <span>Rafraîchissement auto : <span id="refreshInterval">15</span>s</span>
+    <span id="lastUpdate">Dernière MAJ : --</span>
+  </div>
+</div>
+
+<!-- BOARD -->
+<div class="board" id="board"></div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- SOUND -->
+<audio id="notifSound" preload="auto">
+  <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT" type="audio/wav">
+</audio>
+
+<script>
+// ============================================================
+// CONFIG
+// ============================================================
+let CONFIG = {
+  restaurant: { name: 'RICHMOND FOOD', tagline: 'Tableau de Bord Cuisine', logo: '🍽️' },
+  webhook: { get_orders: '', update_status: '' },
+  refresh_interval_seconds: 15,
+  sound_alerts: true,
+  auto_refresh: true,
+  urgent_after_minutes: 15
+};
+
+const STATUSES = [
+  { id: 'new', label: 'Nouvelles', icon: '🆕' },
+  { id: 'preparing', label: 'En préparation', icon: '👨‍🍳' },
+  { id: 'ready', label: 'Prêtes', icon: '✅' },
+  { id: 'delivering', label: 'En livraison', icon: '🛵' }
+];
+
+// ============================================================
+// STATE
+// ============================================================
+let orders = [];
+let previousOrderIds = new Set();
+let soundEnabled = true;
+let refreshTimer = null;
+let clockTimer = null;
+let firstLoad = true;
+
+// ============================================================
+// INIT
+// ============================================================
+document.addEventListener('DOMContentLoaded', async () => {
+  await loadConfig();
+  startClock();
+  renderBoard();
+  startRefreshLoop();
+  setTimeout(() => document.getElementById('loading').classList.add('hide'), 800);
+  soundEnabled = CONFIG.sound_alerts;
+  updateSoundBtn();
+  document.getElementById('refreshInterval').textContent = CONFIG.refresh_interval_seconds;
+});
+
+async function loadConfig() {
+  try {
+    const r = await fetch('./config.json');
+    CONFIG = { ...CONFIG, ...(await r.json()) };
+    console.log('✅ Config chargée');
+  } catch (e) {
+    console.warn('Config par défaut utilisée');
+  }
+}
+
+// ============================================================
+// CLOCK
+// ============================================================
+function startClock() {
+  updateClock();
+  clockTimer = setInterval(updateClock, 1000);
+}
+
+function updateClock() {
+  const now = new Date();
+  const h = String(now.getHours()).padStart(2, '0');
+  const m = String(now.getMinutes()).padStart(2, '0');
+  const s = String(now.getSeconds()).padStart(2, '0');
+  document.getElementById('clock').textContent = `${h}:${m}:${s}`;
+  document.getElementById('infoTime').textContent = `${h}:${m}`;
+}
+
+// ============================================================
+// REFRESH
+// ============================================================
+function startRefreshLoop() {
+  fetchOrders();
+  if (refreshTimer) clearInterval(refreshTimer);
+  const interval = (CONFIG.refresh_interval_seconds || 15) * 1000;
+  refreshTimer = setInterval(fetchOrders, interval);
+}
+
+async function manualRefresh() {
+  showToast('🔄 Rafraîchissement...', 'success');
+  await fetchOrders();
+}
+
+// ============================================================
+// FETCH ORDERS
+// ============================================================
+async function fetchOrders() {
+  const url = CONFIG.webhook.get_orders;
+  if (!url) {
+    setOnline(false);
+    return;
+  }
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'get_orders' })
+    });
+    if (!response.ok) throw new Error('HTTP ' + response.status);
+
+    const data = await response.json();
+    const newOrders = Array.isArray(data) ? data : (data.orders || data.data || []);
+
+    if (!firstLoad) detectNewOrders(newOrders);
+    firstLoad = false;
+
+    orders = newOrders;
+    renderBoard();
+    setOnline(true);
+
+    document.getElementById('lastUpdate').textContent = 'Dernière MAJ : ' +
+      new Date().toLocaleTimeString('fr-FR');
+  } catch (e) {
+    console.error(e);
+    setOnline(false);
+  }
+}
+
+function detectNewOrders(newOrders) {
+  const currentIds = new Set(newOrders.map(o => o.id || o.order_number));
+  for (const id of currentIds) {
+    if (!previousOrderIds.has(id)) {
+      const order = newOrders.find(o => (o.id || o.order_number) === id);
+      if (order && (order.state === 'new' || !order.state)) {
+        onNewOrder(order);
+      }
+    }
+  }
+  previousOrderIds = currentIds;
+}
+
+function onNewOrder(order) {
+  document.getElementById('alertText').textContent =
+    `#${order.order_number} • ${order.customer_name || 'Client'}`;
+  document.getElementById('alertOverlay').classList.add('show');
+  if (soundEnabled) playSound();
+  if (navigator.vibrate) navigator.vibrate([300, 100, 300]);
+}
+
+function playSound() {
+  try {
+    const audio = document.getElementById('notifSound');
+    audio.currentTime = 0;
+    audio.volume = 1;
+    audio.play().catch(() => {});
+  } catch (e) {}
+}
+
+function closeAlert() {
+  document.getElementById('alertOverlay').classList.remove('show');
+}
+
+// ============================================================
+// RENDER
+// ============================================================
+function renderBoard() {
+  const board = document.getElementById('board');
+
+  board.innerHTML = STATUSES.map(status => {
+    const statusOrders = orders.filter(o => {
+      const s = o.state || o.status || 'new';
+      return s === status.id;
+    });
+
+    return `
+      <div class="column ${status.id}">
+        <div class="column-header">
+          <div class="column-title">
+            <span class="column-icon">${status.icon}</span>
+            <span class="column-title-text">${status.label}</span>
+          </div>
+          <div class="column-count">${statusOrders.length}</div>
+        </div>
+        <div class="column-body">
+          ${statusOrders.length === 0
+            ? `<div class="empty-state">
+                 <div class="empty-icon">${status.icon}</div>
+                 <div class="empty-text">Aucune commande</div>
+               </div>`
+            : statusOrders.map(o => renderOrderCard(o, status)).join('')
+          }
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  updateStats();
+}
+
+function renderOrderCard(order, status) {
+  const orderNum = order.order_number || order.id || 'N/A';
+  const customer = order.customer_name || 'Client';
+  const source = order.source || 'website';
+  const sourceLabel = source === 'website' ? '🌐 WEB' : '📱 WHATSAPP';
+  const sourceClass = source === 'website' ? 'source-website' : 'source-whatsapp';
+
+  const timeSince = getTimeSince(order.create_date || order.order_date);
+  const isUrgent = timeSince.minutes > (CONFIG.urgent_after_minutes || 15) && status.id !== 'ready';
+
+  const items = order.items || order.order_lines || [];
+  const itemsHtml = items.map(i => `
+    <div class="order-item">
+      <div class="item-left">
+        <span class="item-qty">${i.quantity || i.qty || 1}x</span>
+        <div style="flex:1;">
+          <div class="item-name">${i.dish_name || i.name || 'Article'}</div>
+          ${i.notes ? `<div class="item-notes">📝 ${i.notes}</div>` : ''}
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  let actions = '';
+  if (status.id === 'new') {
+    actions = `<button class="btn-action btn-start" onclick="updateStatus('${orderNum}', 'preparing')">👨‍🍳 Commencer</button>`;
+  } else if (status.id === 'preparing') {
+    actions = `
+      <button class="btn-action btn-ready" onclick="updateStatus('${orderNum}', 'ready')">✅ Prête</button>
+      <button class="btn-action btn-back" onclick="updateStatus('${orderNum}', 'new')">↩</button>
+    `;
+  } else if (status.id === 'ready') {
+    actions = `
+      <button class="btn-action btn-deliver" onclick="updateStatus('${orderNum}', 'delivering')">🛵 Livraison</button>
+      <button class="btn-action btn-back" onclick="updateStatus('${orderNum}', 'preparing')">↩</button>
+    `;
+  } else if (status.id === 'delivering') {
+    actions = `<button class="btn-action btn-ready" onclick="updateStatus('${orderNum}', 'delivered')">🎉 Livrée</button>`;
+  }
+
+  const payment = order.payment_method ? order.payment_method.toUpperCase() : '';
+
+  return `
+    <div class="order-card ${status.id} ${isUrgent ? 'urgent' : ''}">
+      <div class="order-header">
+        <div class="order-number">#${orderNum}</div>
+        <div class="order-source ${sourceClass}">${sourceLabel}</div>
+      </div>
+
+      <div class="order-time ${isUrgent ? 'urgent' : ''}">
+        <span>⏱️</span>
+        <span>Il y a ${timeSince.text}</span>
+        ${isUrgent ? '<span>⚠️ RETARD</span>' : ''}
+      </div>
+
+      <div class="order-customer">
+        <span>👤</span>
+        <span>${customer}</span>
+      </div>
+
+      ${order.customer_phone || order.customer_address ? `
+        <div class="order-contact">
+          ${order.customer_phone ? `📞 <strong>${order.customer_phone}</strong><br>` : ''}
+          ${order.customer_address ? `📍 ${order.customer_address}` : ''}
+        </div>
+      ` : ''}
+
+      <div class="order-items">
+        ${itemsHtml || '<div style="text-align:center;color:#999;padding:15px;font-size:0.85rem;">Aucun article</div>'}
+      </div>
+
+      <div class="order-total">
+        <span class="order-total-label">Total</span>
+        <span class="order-total-value">${(order.total || 0).toLocaleString()} F</span>
+      </div>
+
+      ${payment || order.delivery_time ? `
+        <div class="order-meta">
+          ${payment ? `<span class="meta-tag">💳 ${payment}</span>` : ''}
+          ${order.delivery_time && order.delivery_time !== 'asap' ? `<span class="meta-tag">🕐 ${order.delivery_time}</span>` : ''}
+        </div>
+      ` : ''}
+
+      ${order.notes && !order.notes.includes('Commande WhatsApp') ? `
+        <div class="order-notes">📝 ${order.notes}</div>
+      ` : ''}
+
+      <div class="order-actions">${actions}</div>
+    </div>
+  `;
+}
+
+function getTimeSince(dateStr) {
+  if (!dateStr) return { text: 'N/A', minutes: 0 };
+  const now = new Date();
+  const past = new Date(dateStr);
+  const diffMins = Math.floor((now - past) / 60000);
+  if (diffMins < 1) return { text: '< 1 min', minutes: 0 };
+  if (diffMins < 60) return { text: `${diffMins} min`, minutes: diffMins };
+  const hours = Math.floor(diffMins / 60);
+  const mins = diffMins % 60;
+  return { text: `${hours}h${mins > 0 ? mins + 'min' : ''}`, minutes: diffMins };
+}
+
+function updateStats() {
+  const newCount = orders.filter(o => (o.state || 'new') === 'new').length;
+  const prepCount = orders.filter(o => (o.state || 'new') === 'preparing').length;
+  const readyCount = orders.filter(o => (o.state || 'new') === 'ready').length;
+
+  document.getElementById('statNew').textContent = newCount;
+  document.getElementById('statPrep').textContent = prepCount;
+  document.getElementById('statReady').textContent = readyCount;
+  document.getElementById('infoTotal').textContent = orders.length;
+}
+
+// ============================================================
+// UPDATE STATUS
+// ============================================================
+async function updateStatus(orderNumber, newStatus) {
+  const url = CONFIG.webhook.update_status;
+  if (!url) {
+    showToast('❌ URL non configurée', 'error');
+    return;
+  }
+
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ order_number: orderNumber, state: newStatus })
+    });
+    if (!response.ok) throw new Error('HTTP ' + response.status);
+
+    const labels = { preparing: 'en préparation', ready: 'prête', delivering: 'en livraison', delivered: 'livrée', new: 'nouvelle' };
+    showToast(`✅ Commande #${orderNumber} → ${labels[newStatus] || newStatus}`, 'success');
+
+    const order = orders.find(o => (o.order_number || o.id) === orderNumber);
+    if (order) order.state = newStatus;
+    renderBoard();
+
+    setTimeout(fetchOrders, 1500);
+  } catch (e) {
+    console.error(e);
+    showToast('❌ Erreur de mise à jour', 'error');
+  }
+}
+
+// ============================================================
+// UTILS
+// ============================================================
+function setOnline(online) {
+  const badge = document.getElementById('statusBadge');
+  const text = document.getElementById('statusText');
+  if (online) {
+    badge.classList.remove('offline');
+    text.textContent = 'En ligne';
+  } else {
+    badge.classList.add('offline');
+    text.textContent = 'Hors ligne';
+  }
+}
+
+function toggleSound() {
+  soundEnabled = !soundEnabled;
+  updateSoundBtn();
+  showToast(soundEnabled ? '🔊 Son activé' : '🔇 Son coupé', 'success');
+}
+
+function updateSoundBtn() {
+  document.getElementById('soundBtn').textContent = soundEnabled ? '🔊' : '🔇';
+}
+
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {});
+  } else {
+    document.exitFullscreen().catch(() => {});
+  }
+}
+
+function showToast(msg, type = '') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show ' + type;
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// Raccourcis clavier
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'F5') { e.preventDefault(); manualRefresh(); }
+  if (e.key === 'Escape') closeAlert();
+  if (e.ctrlKey && e.key === 'f') { e.preventDefault(); toggleFullscreen(); }
+});
+</script>
+</body>
+</html>

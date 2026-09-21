@@ -1,0 +1,15 @@
+{
+  "restaurant": {
+    "name": "RICHMOND FOOD",
+    "tagline": "Tableau de Bord Cuisine",
+    "logo": "🍽️"
+  },
+  "webhook": {
+    "get_orders": "https://deploy-showoff-engaging.ngrok-free.dev/webhook/kitchen-orders",
+    "update_status": "https://deploy-showoff-engaging.ngrok-free.dev/webhook/kitchen-update"
+  },
+  "refresh_interval_seconds": 15,
+  "sound_alerts": true,
+  "auto_refresh": true,
+  "urgent_after_minutes": 15
+}
